@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSV Data Processor</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='styles.css') }}">
+</head>
+<body>
+    <main class="page-shell">
+        <section class="hero card">
+            <div class="hero-copy">
+                <p class="eyebrow">CSV Data Processor Web App</p>
+                <h1>Upload a CSV, clean it up, and download the result.</h1>
+                <p class="hero-text">
+                    Preview your data, remove duplicates, sort rows, filter values, and keep only the columns you need.
+                </p>
+            </div>
+            <form id="upload-form" class="upload-panel" novalidate>
+                <label class="upload-dropzone" for="csv-file">
+                    <input id="csv-file" name="file" type="file" accept=".csv,text/csv">
+                    <span class="upload-title">Choose CSV file</span>
+                    <span class="upload-subtitle">Single CSV file, common encodings supported</span>
+                </label>
+                <button id="upload-button" class="primary-button" type="submit">Upload CSV</button>
+            </form>
+        </section>
+
+        <section class="messages">
+            <div id="status-message" class="message message-status hidden" role="status" aria-live="polite"></div>
+            <div id="error-message" class="message message-error hidden" role="alert" aria-live="assertive"></div>
+        </section>
+
+        <section id="workspace" class="workspace hidden">
+            <div class="workspace-grid">
+                <aside class="card control-panel">
+                    <div class="panel-heading">
+                        <h2>Processing actions</h2>
+                        <p id="file-summary" class="panel-meta">No file uploaded yet.</p>
+                    </div>
+
+                    <form id="process-form" class="control-form" novalidate>
+                        <label class="checkbox-row" for="remove-duplicates">
+                            <input id="remove-duplicates" type="checkbox">
+                            <span>Remove duplicate rows</span>
+                        </label>
+
+                        <div class="control-group">
+                            <label for="sort-column">Sort by column</label>
+                            <select id="sort-column">
+                                <option value="">No sorting</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="sort-order">Sort order</label>
+                            <select id="sort-order">
+                                <option value="asc">Ascending</option>
+                                <option value="desc">Descending</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="filter-column">Filter column</label>
+                            <select id="filter-column">
+                                <option value="">No filter</option>
+                            </select>
+                        </div>
+
+                        <div class="control-group">
+                            <label for="filter-value">Filter value</label>
+                            <input id="filter-value" type="text" placeholder="Contains text...">
+                        </div>
+
+                        <fieldset class="control-group keep-columns-group">
+                            <legend>Keep selected columns</legend>
+                            <div id="keep-columns" class="checkbox-list"></div>
+                            <p class="helper-text">Leave all unchecked to keep every column.</p>
+                        </fieldset>
+
+                        <div class="button-row">
+                            <button id="apply-button" class="primary-button" type="submit">Apply changes</button>
+                            <a id="download-button" class="secondary-button" href="#" download>Download CSV</a>
+                        </div>
+                    </form>
+                </aside>
+
+                <section class="card preview-panel">
+                    <div class="panel-heading preview-heading">
+                        <div>
+                            <h2>Data preview</h2>
+                            <p class="panel-meta">First 20 rows from the current result.</p>
+                        </div>
+                        <span id="row-count" class="pill">0 rows</span>
+                    </div>
+
+                    <div id="preview-empty" class="empty-state">
+                        Upload a CSV file to see the preview here.
+                    </div>
+
+                    <div id="preview-table-wrapper" class="table-wrapper hidden">
+                        <table id="preview-table">
+                            <thead></thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', path='app.js') }}" defer></script>
+</body>
+</html>
